@@ -1,8 +1,16 @@
 import React from 'react';
 
-const ListItem = ({car}) => {
+const ListItem = ({car, idx, onDragStart}) => {
 	return(
-		<li>{car}</li>
+		<li>
+			<div 
+				className="drag"
+				draggable
+				onDragStart = {e => onDragStart(e, idx)}
+			>
+				{car}
+			</div>
+		</li>
 	)
 };
 
