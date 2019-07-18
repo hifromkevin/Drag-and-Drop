@@ -1,12 +1,13 @@
 import React from 'react';
 
-const ListItem = ({car, idx, onDragStart}) => {
+const ListItem = ({ car, idx, dragStart, dragOver, dragEnd }) => {
 	return(
-		<li>
+		<li onDragOver = { () => dragOver(idx) } >
 			<div 
 				className="drag"
 				draggable
-				onDragStart = {e => onDragStart(e, idx)}
+				onDragStart = { e => dragStart(e, idx) }
+				onDragEnd = { dragEnd }
 			>
 				{car}
 			</div>
