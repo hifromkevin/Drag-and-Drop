@@ -10,20 +10,28 @@ export default class App extends Component {
 			list: ['Ford', 'Chevrolet', 'Mazda', 'Toyota', 'Honda', 'Dodge', 'BMW', 'Mercedes']
 		}
 
-		this.onDragStart = this.onDragStart.bind(this);
-		this.onDragOver = this.onDragOver.bind(this);
+		this.dragStart = this.dragStart.bind(this);
+		this.dragOver = this.dragOver.bind(this);
+		this.dragEnd = this.dragEnd.bind(this);
 	}
 
-	onDragStart(e, idx) {
+	dragStart(e, idx) {
 		this.draggedItem = this.state.list[idx];
-		console.log(this.draggedItem)
 		e.dataTransfer.effectAllowed = 'move';
 		e.dataTransfer.setData('text/html', e.target.parentNode);
 		e.dataTransfer.setDragImage(e.target.parentNode, 20, 20);
 	};
 
-	onDragOver(idx) {
+	dragOver(idx) {
 		const draggedOverItem = this.state.list[idx];
+		if (this.draggedItem === draggedOverItem) return;
+		let items = this.state.list.filter(item => item !== this.draggedItem);
+		items.splice(idx, 0, this.draggedItem);
+		this.setState({ list: items });
+	}
+
+	dragEnd() {
+		this.draggedItem = null;
 	}
 
 	render() {
@@ -32,7 +40,15 @@ export default class App extends Component {
 				<h1>My Favorite Car Brands</h1>
 				<ol>
 					{this.state.list.map((car, i) => {
-						return <ListItem car={car} key={i} idx={i} onDragStart={this.onDragStart} />
+						return <
+							ListItem 
+							car = { car } 
+							key = { i } 
+							idx = { i } 
+							dragStart = { this.dragStart } 
+							dragOver = { this.dragOver } 
+							dragEnd = { this.dragEnd } 
+						/>
 					})}
 				</ol>
 			</div>
